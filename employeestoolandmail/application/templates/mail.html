@@ -1,0 +1,84 @@
+{% extends "layout.html" %}
+{% block content %}
+<nav id="topNav">
+    <h1><a href="/mail">Employees Mail System</a></h1>
+    <form method="POST" action="{{ url_for('tool') }}">
+        {{ search_form.hidden_tag() }}
+            <div class="form-group">
+                {{ search_form.search(size=40, class="form-control searchbar ip") }}
+                <input class="button--submit ip" value="Search" type="submit">
+            </div>
+        
+    </form>
+    <h3><a href="/tool">Employees Tool</a></h3>
+</nav>
+<main id="site2">
+
+    
+    <div class="buttons">
+        <p> Hello, After you add employees make sure to click "Create" button to open your mail form! </p>
+        <input class="e1" type="submit" name="create_mail" value="Chose Employee">
+        <input type="submit" name="send_email" value="Create" style="display: none;">
+    
+    </div>
+            
+    
+    <section class="mailsBox">
+        <div class="padding">
+            <table class="mailTable">
+    
+                <tr>
+                    <th>Name</th>
+                    <th>Surrname</th>
+                    <th>Mail</th>
+                   
+                </tr>
+                
+                {% for employee in employees %}
+                    <tr class="mailTr">
+                            <td>{{ employee.first_name }}</td>
+                            <td>{{ employee.last_name }}</td>
+                            <td>{{ employee.email }}</td>
+                            <td class="mailBox" style="display: none;"><input  type="checkbox" name="selected_employees" value="{{ employee.id }}"></td>
+                    </tr>
+                {% endfor %}
+            </table>
+    
+        </div>
+        
+    
+    </section>
+
+    <section id="mailSection">
+        <form method="post"  id="email-form" style="display: none;">
+            {{ email_form.subject.label }} {{ email_form.subject(size=30) }}<br>
+            {{ email_form.message.label }} {{ email_form.message(rows=10) }}<br>
+            {{ email_form.send() }}
+            
+    
+            
+
+          </form>
+    
+    </section>
+    
+   
+    
+
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+    <ul id=flashes>
+    {% for message in messages %}
+    <li>{{ message }}</li>
+    {% endfor %}
+    </ul>
+    {% endif %}
+{% endwith %}
+
+
+</main>
+
+
+
+
+{% endblock %}

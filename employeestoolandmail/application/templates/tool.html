@@ -1,0 +1,114 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<nav id="topNav">
+    <h1><a href="/tool">Employees Tool</a></h1>
+    <form method="POST" action="{{ url_for('tool') }}">
+        {{ search_form.hidden_tag() }}
+            <div class="form-group">
+                {{ search_form.search(size=40, class="form-control searchbar ip") }}
+                <input class="button--submit ip" value="Search" type="submit">
+            </div>
+        
+    </form>
+    <h3><a href="/mail">Employees Mail System</a></h3>
+</nav>
+
+
+
+
+
+<main id="site">
+
+    <section id="intro">
+
+        <div class="infoBox">
+            <p>Hello! </p>
+            {% if position_counts %}
+                <p>Currently, in your company, there are:</p>
+                <ul class="employeeInfo">
+                    {% for position, count in position_counts %}
+                        <li>{{ position }}: {{ count }}</li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p>Currently, in your company, there are no employees. Let's hire someone!</p>
+            {% endif %}
+            <p>If you want to add a new employee, just click the add button. </p>
+            <p>Take care!</p>
+        </div>
+
+        <div class="addBox">
+            <form action="#" method="POST">
+                {{ form.first_name(class="addIp", placeholder="Name", autocomplete="off") }}
+                {{ form.last_name(class="addIp", placeholder="Surrname", autocomplete="off") }}
+                {{ form.birth_day(class="addIp", placeholder="Birth day", autocomplete="off") }}
+                {{ form.adres(class="addIp", placeholder="Adres", autocomplete="off") }}
+                {{ form.phone_number(class="addIp", placeholder="Phone", autocomplete="off") }}
+                {{ form.salary(class="addIp", placeholder="Salary", autocomplete="off") }}
+                {{ form.position(class="addIp", placeholder="Position", autocomplete="off") }}
+                {{ form.enter(class="addButton") }}
+             </form>
+        </div>
+
+    </section>
+    
+
+
+        
+
+            
+<section class="employeeSection">
+    <div class="employeeBox">
+        <div class="padding">
+            <table class="employeeTable">
+                
+                <tr>
+                    <th>Name</th>
+                    <th>Surrname</th>
+                    <th>Birth Day</th>
+                    <th>Adres</th>
+                    <th>Phone</th>
+                    <th>Salary</th>
+                    <th>Position</th>
+                   
+                </tr>
+                {% for employee in employees %}
+                    <tr class="employeeTr">
+                            <td >{{ employee.first_name }}</td>
+                            <td>{{ employee.last_name }}</td>
+                            <td>{{ employee.birth_day }}</td>
+                            <td>{{ employee.adres }}</td>
+                            <td>{{ employee.phone_number }}</td>
+                            <td>{{ employee.salary }}</td>
+                            <td>{{ employee.position }}</td>
+                            <td class="nocolor">
+                                <form style="margin-left: 1rem;" method="post" action="{{ url_for('delete_employee', employee_id=employee.id) }}">
+                                    <button type="submit" class="delete-button"><svg viewBox="0 0 448 512" class="svgIcon"><path d="M135.2 17.7L128 32H32C14.3 32 0 46.3 0 64S14.3 96 32 96H416c17.7 0 32-14.3 32-32s-14.3-32-32-32H320l-7.2-14.3C307.4 6.8 296.3 0 284.2 0H163.8c-12.1 0-23.2 6.8-28.6 17.7zM416 128H32L53.2 467c1.6 25.3 22.6 45 47.9 45H346.9c25.3 0 46.3-19.7 47.9-45L416 128z"></path></svg></button>
+                                </form>
+                            </td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+       
+
+    </div>
+
+</section>
+            
+
+{% with messages = get_flashed_messages() %}
+                {% if messages %}
+                <ul id=flashes>
+                {% for message in messages %}
+                <li>{{ message }}</li>
+                {% endfor %}
+                </ul>
+                {% endif %}
+    {% endwith %}
+            
+</main>
+
+
+{% endblock %}
